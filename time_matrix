@@ -1,0 +1,103 @@
+'''
+結果為matrix[n1][n2][n3]
+n1為從2020/1/1每天24hr排下來的矩陣
+n2為row
+n3為column
+'''
+
+
+import csv
+import numpy as np
+
+with open('../combined_with_grid_id.csv', newline='') as csvfile:#讀黨 #記得更改位置
+    data = list(csv.reader(csvfile))
+matrix = np.zeros((27000,826,425)) #編號，rows，columns
+for i in range(1,len(data)):
+    split = data[i][2].split('/')#分開讀日期
+    
+    n1 = 365*24*(int(split[2]) - 2020) + int(split[1])*24 - 24 + int(data[i][19])
+    
+    if split[0] == "2":
+        n1 += 31*24
+    elif split[0] == "3":
+        n1 += 61*24
+    elif split[0] == "4":
+        n1 += 92*24
+    elif split[0] == "5":
+        n1 += 122*24
+    elif split[0] == "6":
+        n1 += 153*24
+    elif split[0] == "7":
+        n1 += 183*24
+    elif split[0] == "8":
+        n1 += 214*24
+    elif split[0] == "9":
+        n1 += 245*24
+    elif split[0] == "10":
+        n1 += 274*24
+    elif split[0] == "11":
+        n1 += 305*24
+    elif split[0] == "12":
+        n1 += 335*24
+        
+    if int(split[0])>2020 or int(split[0])>=3:
+        n1 += 24
+    
+    n2 = int(int(data[i][23])/425)
+    n3 = int(data[i][23])%425
+    matrix[n1][n2][n3] += 1
+
+
+'''
+還有每天/每月的版本
+matrix = np.zeros((365*3,826,425)) #編號，rows，columns
+
+for i in range(1,len(data)):
+    
+    split = data[i][2].split('/')
+    
+    n1 = 365*(int(split[2]) - 2020) + int(split[1]) -1
+    
+    if split[0] == "2":
+        n1 += 31
+    elif split[0] == "3":
+        n1 += 61
+    elif split[0] == "4":
+        n1 += 92
+    elif split[0] == "5":
+        n1 += 122
+    elif split[0] == "6":
+        n1 += 153
+    elif split[0] == "7":
+        n1 += 183
+    elif split[0] == "8":
+        n1 += 214
+    elif split[0] == "9":
+        n1 += 245
+    elif split[0] == "10":
+        n1 += 274
+    elif split[0] == "11":
+        n1 += 305
+    elif split[0] == "12":
+        n1 += 335
+    
+    if int(split[0])>2020 or int(split[0])>=3:
+        n1 += 1
+    
+    n2 = int(int(data[i][23])/425)
+    n3 = int(data[i][23])%425
+    matrix[n1][n2][n3] += 1
+--------
+matrix = np.zeros((31,826,425)) #編號，rows，columns
+
+for i in range(1,len(data)):
+    
+    split = data[i][2].split('/')
+    
+    n1 = 12*(int(split[2]) - 2020) + int(split[0]) -1  
+    n2 = int(int(data[i][23])/425)
+    n3 = int(data[i][23])%425
+    
+    matrix[n1][n2][n3] += 1
+
+'''
